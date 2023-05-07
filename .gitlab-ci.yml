@@ -1,0 +1,21 @@
+image: "rust:latest"
+
+variables:
+  CARGO_HOME: $HOME/.cargo/
+  CARGO_TARGET_DIR: $CI_PROJECT_DIR/target
+
+before_script:
+  - rustup component add rustfmt
+  - rustup component add clippy
+  - rustc --version && cargo --version  # Print version info for debugging
+
+test:cargo:
+ cache:
+   key: shared-cache
+   paths:
+     - $CARGO_TARGET_DIR
+     - $CARGO_HOME
+ script:
+   - cargo test --workspace --verbose
+   - cargo fmt --all -- --check
+   - cargo clippy -- -D warnings -W clippy::shadow_reuse
