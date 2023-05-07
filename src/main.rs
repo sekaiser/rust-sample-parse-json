@@ -16,7 +16,8 @@ struct Medal {
 // Determines the current list of (athletics) medals as advertised by olympics.com.
 fn fetch_medals() -> Result<Vec<Medal>, Box<dyn std::error::Error>> {
     // From: https://olympics.com/en/olympic-games/tokyo-2020/results/athletics
-    let url = "https://path.to.file/athletics.json";
+    let url =
+        "https://raw.githubusercontent.com/sekaiser/rust-sample-parse-json/main/athletics.json";
     let json: serde_json::Value = reqwest::blocking::get(url)?.json()?;
     let mut medals = vec![];
     for event in json["pageProps"]["gameDiscipline"]["events"]
@@ -232,7 +233,8 @@ mod tests {
 
     #[test]
     fn new_test() -> Result<(), Box<dyn std::error::Error>> {
-        let url = "https://path.to.json/athletics.json";
+        let url =
+            "https://raw.githubusercontent.com/sekaiser/rust-sample-parse-json/main/athletics.json";
         let db = AthleticsDb::from_url(Url::from_str(url)?)?;
 
         let mut last_top5 = Projection::empty();
